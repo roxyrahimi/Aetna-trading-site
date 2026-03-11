@@ -41,12 +41,9 @@ const specSearch = document.getElementById('spec-search');
 const specSheetList = document.getElementById('spec-sheet-list');
 const specViewer = document.getElementById('spec-viewer');
 const cartItems = document.getElementById('cart-items');
-const drawerCartItems = document.getElementById('drawer-cart-items');
 const quoteOutput = document.getElementById('quote-output');
 const sendQuoteRequest = document.getElementById('send-quote-request');
 const cartToggle = document.getElementById('cart-toggle');
-const cartClose = document.getElementById('cart-close');
-const cartDrawer = document.getElementById('cart-drawer');
 const cartCount = document.getElementById('cart-count');
 const contactForm = document.getElementById('contact-form');
 const contactName = document.getElementById('contact-name');
@@ -123,7 +120,7 @@ function renderCatalog() {
 
     row.querySelector('[data-action="buy"]').addEventListener('click', () => {
       addToCart(item);
-      location.hash = 'quote';
+      location.hash = 'cart';
     });
 
     catalogResults.appendChild(row);
@@ -368,6 +365,14 @@ function addToCart(item) {
   } else {
     cart.set(key, { ...item, qty: 1 });
   }
+  triggerCartAnimation();
+  renderCart();
+}
+
+function setCartQuantity(key, qty) {
+  const existing = cart.get(key);
+  if (!existing) return;
+  existing.qty = qty;
   renderCart();
 }
 
@@ -391,16 +396,24 @@ function renderCart() {
       const row = document.createElement('div');
       row.className = 'cart-item';
       row.innerHTML = `
-        <span>${item.ingredient} x${item.qty}</span>
-        <button class="button ghost">Remove</button>
+        <span>${item.ingredient}</span>
+        <label class="qty-control">
+          Qty
+          <select data-qty="${item.ingredient}">
+            ${Array.from({ length: 20 }, (_, i) => i + 1)
+              .map((n) => `<option value="${n}" ${n === item.qty ? 'selected' : ''}>${n}</option>`)
+              .join('')}
+          </select>
+        </label>
+        <button class="button ghost" data-remove="${item.ingredient}">Remove</button>
       `;
-      row.querySelector('button').addEventListener('click', () => removeFromCart(item.ingredient));
+      row.querySelector('select').addEventListener('change', (e) => setCartQuantity(item.ingredient, Number(e.target.value)));
+      row.querySelector('[data-remove]').addEventListener('click', () => removeFromCart(item.ingredient));
       container.appendChild(row);
     });
   };
 
   draw(cartItems);
-  draw(drawerCartItems);
   updateQuoteSummaryAndLink();
 }
 
@@ -416,7 +429,6 @@ function updateQuoteSummaryAndLink() {
   entries.forEach((item, idx) => {
     summary += `${idx + 1}. ${item.ingredient} | ${item.industry} | ${item.subcategory} | Requested quantity: ${item.qty} unit(s)\n`;
   });
-  summary += '\nPlease confirm minimum order quantity, lead time, and final pricing.';
 
   quoteOutput.textContent = summary;
 
@@ -430,7 +442,7 @@ function setupQuoteRequestLink() {
     if (cart.size === 0) {
       e.preventDefault();
       quoteOutput.textContent = 'Please add at least one ingredient before requesting a quote.';
-      location.hash = 'quote';
+      location.hash = 'cart';
     }
   });
 }
@@ -515,15 +527,22 @@ function setupChatbot() {
   });
 }
 
-function setupCartDrawer() {
-  cartToggle.addEventListener('click', () => cartDrawer.classList.toggle('hidden'));
-  cartClose.addEventListener('click', () => cartDrawer.classList.add('hidden'));
+function setupCartNavigation() {
+  cartToggle.addEventListener('click', () => {
+    location.hash = 'cart';
+  });
+}
+
+function triggerCartAnimation() {
+  cartToggle.classList.remove('cart-bump');
+  void cartToggle.offsetWidth;
+  cartToggle.classList.add('cart-bump');
 }
 
 renderCatalog();
 renderSpecList();
 renderCart();
-setupCartDrawer();
+setupCartNavigation();
 setupChatbot();
 setupQuoteRequestLink();
 setupContactForm();

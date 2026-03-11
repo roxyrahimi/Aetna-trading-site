@@ -16,10 +16,10 @@
       <div class="nav-links">
         <a href="#catalog">Catalog</a>
         <a href="#spec-sheets">Spec Sheets</a>
-        <a href="#quote">Request for Quote</a>
+        <a href="#cart">Request for Quote</a>
         <a href="#contact">Contact Us</a>
       </div>
-      <button id="cart-toggle" class="cart-btn" aria-label="Open cart">
+      <button id="cart-toggle" class="cart-btn" aria-label="Go to cart">
         <span>Cart</span>
         <span id="cart-count" class="cart-count">0</span>
       </button>
@@ -40,7 +40,7 @@
       </p>
       <div class="hero-actions">
         <a class="button primary" href="#catalog">Browse Ingredients</a>
-        <a class="button ghost" href="#quote">Start Request for Quote</a>
+        <a class="button ghost" href="#cart">Start Request for Quote</a>
       </div>
     </div>
   </header>
@@ -74,9 +74,9 @@
       </div>
     </section>
 
-    <section class="section" id="quote">
+    <section class="section" id="cart">
       <div class="section-head">
-        <h2>Request a Quote</h2>
+        <h2>Cart and Quote Request</h2>
         <p>Add ingredients to cart, then request your quote directly by email.</p>
       </div>
       <div class="quote-layout">
@@ -115,15 +115,6 @@
       </div>
     </section>
   </main>
-
-  <aside id="cart-drawer" class="cart-drawer hidden">
-    <div class="drawer-head">
-      <h3>Your Cart</h3>
-      <button id="cart-close" aria-label="Close cart">×</button>
-    </div>
-    <div id="drawer-cart-items" class="cart-items"></div>
-    <a class="button primary" href="#quote">Go to Request for Quote</a>
-  </aside>
 
   <button class="chat-toggle" id="chat-toggle">Ask Aetna Assistant</button>
   <aside class="chatbot hidden" id="chatbot">
