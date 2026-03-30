@@ -37,14 +37,17 @@ const catalogData = [
 
 const catalogSearch = document.getElementById('catalog-search');
 const catalogResults = document.getElementById('catalog-results');
+const industryTiles = document.querySelectorAll('.industry-tile');
 const specSearch = document.getElementById('spec-search');
 const specSheetList = document.getElementById('spec-sheet-list');
 const specViewer = document.getElementById('spec-viewer');
 const cartItems = document.getElementById('cart-items');
 const quoteOutput = document.getElementById('quote-output');
 const sendQuoteRequest = document.getElementById('send-quote-request');
+const cartToast = document.getElementById('cart-toast');
 const cartToggle = document.getElementById('cart-toggle');
 const cartCount = document.getElementById('cart-count');
+const cartFloatCount = document.getElementById('cart-float-count');
 const contactForm = document.getElementById('contact-form');
 const contactName = document.getElementById('contact-name');
 const contactCompany = document.getElementById('contact-company');
@@ -60,12 +63,13 @@ const chatForm = document.getElementById('chat-form');
 const chatInput = document.getElementById('chat-input');
 
 const cart = new Map();
+let activeIndustry = 'all';
 
 function flattenCatalog() {
   const items = [];
   catalogData.forEach((industryObj) => {
     industryObj.subcategories.forEach((sub) => {
-      sub.ingredients.forEach((ingredient) => {
+      [...sub.ingredients].sort((a, b) => a.localeCompare(b)).forEach((ingredient) => {
         items.push({ ingredient, industry: industryObj.industry, subcategory: sub.name });
       });
     });
@@ -78,10 +82,11 @@ const allItems = flattenCatalog();
 function filteredCatalogItems() {
   const query = catalogSearch.value.trim().toLowerCase();
   return allItems.filter((item) => {
-    if (!query) return true;
+    const matchesIndustry = activeIndustry === 'all' || item.industry === activeIndustry;
+    if (!query) return matchesIndustry;
     const text = `${item.ingredient} ${item.industry} ${item.subcategory}`.toLowerCase();
-    return text.includes(query);
-  });
+    return matchesIndustry && text.includes(query);
+  }).sort((a, b) => a.ingredient.localeCompare(b.ingredient));
 }
 
 function renderCatalog() {
@@ -97,17 +102,10 @@ function renderCatalog() {
     const row = document.createElement('article');
     row.className = 'ingredient-item';
     row.innerHTML = `
-      <div class="ingredient-main">
-        <span class="ingredient-name">${item.ingredient}</span>
-        <span class="ingredient-meta">${item.industry} | ${item.subcategory}</span>
-      </div>
-      <div class="ingredient-main">
-        <span class="ingredient-meta">Available for sourcing</span>
-      </div>
+      <span class="ingredient-name">${item.ingredient}</span>
       <div class="item-actions">
         <button class="button ghost" data-action="spec">View Spec Sheet</button>
         <button class="button ghost" data-action="add">Add to Cart</button>
-        <button class="button primary" data-action="buy">Purchase Now</button>
       </div>
     `;
 
@@ -118,11 +116,6 @@ function renderCatalog() {
 
     row.querySelector('[data-action="add"]').addEventListener('click', () => addToCart(item));
 
-    row.querySelector('[data-action="buy"]').addEventListener('click', () => {
-      addToCart(item);
-      location.hash = 'cart';
-    });
-
     catalogResults.appendChild(row);
   });
 }
@@ -132,6 +125,7 @@ function renderSpecList() {
   specSheetList.innerHTML = '';
 
   const filtered = allItems.filter((item) => !query || item.ingredient.toLowerCase().includes(query));
+  filtered.sort((a, b) => a.ingredient.localeCompare(b.ingredient));
   if (filtered.length === 0) {
     specSheetList.innerHTML = '<p>No spec entry found.</p>';
     return;
@@ -164,7 +158,7 @@ function showSpecSheet(item) {
       <ul>${sheet.physical.map((line) => `<li>${line}</li>`).join('')}</ul>
     </div>
     <div class="spec-block">
-      <h4>7. Stability and Storage</h4>
+      <h4>4. Stability and Storage</h4>
       <ul>${sheet.storage.map((line) => `<li>${line}</li>`).join('')}</ul>
     </div>
   `;
@@ -178,9 +172,7 @@ function buildSpecSheetTemplate(item) {
       `Ingredient Name: ${item.ingredient}`,
       `Industry Segment: ${item.industry}`,
       `Subcategory: ${item.subcategory}`,
-      'Product Code: Internal code required',
-      `Ingredient Type: ${profile.label}`,
-      'CAS Number: Confirm with supplier Certificate of Analysis'
+      `Ingredient Type: ${profile.label}`
     ],
     composition: [
       `Assay/Purity (Typical): ${profile.assay}`,
@@ -366,6 +358,7 @@ function addToCart(item) {
     cart.set(key, { ...item, qty: 1 });
   }
   triggerCartAnimation();
+  showCartToast(`${item.ingredient} added to cart`);
   renderCart();
 }
 
@@ -383,7 +376,9 @@ function removeFromCart(key) {
 
 function renderCart() {
   const entries = [...cart.values()];
-  cartCount.textContent = String(entries.reduce((sum, i) => sum + i.qty, 0));
+  const count = String(entries.reduce((sum, i) => sum + i.qty, 0));
+  cartCount.textContent = count;
+  if (cartFloatCount) cartFloatCount.textContent = count;
 
   const draw = (container) => {
     container.innerHTML = '';
@@ -421,7 +416,7 @@ function updateQuoteSummaryAndLink() {
   const entries = [...cart.values()];
   if (entries.length === 0) {
     quoteOutput.textContent = 'Add ingredients to cart to prepare your quote request.';
-    sendQuoteRequest.href = 'mailto:sales@aetnatrading.com';
+    sendQuoteRequest.href = 'mailto:farahs@aetnatrading.com';
     return;
   }
 
@@ -433,8 +428,8 @@ function updateQuoteSummaryAndLink() {
   quoteOutput.textContent = summary;
 
   const subject = encodeURIComponent('Request for Quote - Aetna Trading');
-  const body = encodeURIComponent(`${summary}\n\nCompany Name:\nContact Name:\nEmail:\nPhone:\nShipping Destination:`);
-  sendQuoteRequest.href = `mailto:sales@aetnatrading.com?subject=${subject}&body=${body}`;
+  const body = encodeURIComponent(`${summary}\n\nI want more information about unit size and lead time.\n\nCompany Name:\nContact Name:\nEmail:\nPhone:\nShipping Destination:`);
+  sendQuoteRequest.href = `mailto:farahs@aetnatrading.com?subject=${subject}&body=${body}`;
 }
 
 function setupQuoteRequestLink() {
@@ -458,8 +453,50 @@ function setupContactForm() {
       `Phone: ${contactPhone.value.trim()}\n\n` +
       `Message:\n${contactMessage.value.trim()}`
     );
-    window.location.href = `mailto:sales@aetnatrading.com?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:roxy@aetnatrading.com?subject=${subject}&body=${body}`;
   });
+}
+
+function setupIndustryFilters() {
+  industryTiles.forEach((tile) => {
+    tile.addEventListener('click', () => {
+      activeIndustry = tile.dataset.industry || 'all';
+      industryTiles.forEach((el) => el.classList.remove('active'));
+      tile.classList.add('active');
+      renderCatalog();
+      location.hash = 'catalog';
+    });
+  });
+}
+
+function showCartToast(message) {
+  cartToast.textContent = message;
+  cartToast.classList.remove('hidden');
+  cartToast.classList.remove('show');
+  void cartToast.offsetWidth;
+  cartToast.classList.add('show');
+
+  setTimeout(() => {
+    cartToast.classList.add('hidden');
+  }, 1400);
+}
+
+function setupRevealAnimations() {
+  const reveals = document.querySelectorAll('.reveal');
+  if (!('IntersectionObserver' in window)) {
+    reveals.forEach((el) => el.classList.add('visible'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.14 });
+
+  reveals.forEach((el) => observer.observe(el));
 }
 
 function addUserLine(text) {
@@ -486,8 +523,12 @@ function findIngredientMention(text) {
 function chatbotReply(text) {
   const lower = text.toLowerCase();
 
+  if (lower.includes('unit') || lower.includes('size') || lower.includes('pack') || lower.includes('repack') || lower.includes('lead time')) {
+    return 'Most ingredients come in 25 kg units. Some products can be repackaged into smaller portions on request. Share the ingredient and quantity, and we will confirm available unit sizes and lead time.';
+  }
+
   if (lower.includes('purchase') || lower.includes('buy') || lower.includes('order')) {
-    return 'Use Catalog to add ingredients to cart, open Request for Quote, then send by email to sales@aetnatrading.com.';
+    return 'Use Catalog to add ingredients to cart, open Request for Quote, then send by email to farahs@aetnatrading.com. Most items are in 25 kg units, with smaller repack options available on request.';
   }
 
   if (lower.includes('replace') || lower.includes('substitute') || lower.includes('alternative')) {
@@ -495,7 +536,7 @@ function chatbotReply(text) {
   }
 
   if (lower.includes('quote') || lower.includes('request for quote')) {
-    return 'Open the Request for Quote tab, add items to cart, then click Request Quote by Email.';
+    return 'Open the Request for Quote tab, add items to cart, then click Request Quote by Email. Include if you want more information about unit size and lead time.';
   }
 
   if (lower.includes('spec')) {
@@ -537,6 +578,12 @@ function triggerCartAnimation() {
   cartToggle.classList.remove('cart-bump');
   void cartToggle.offsetWidth;
   cartToggle.classList.add('cart-bump');
+  const cartFloat = document.getElementById('cart-float');
+  if (cartFloat) {
+    cartFloat.classList.remove('cart-bump');
+    void cartFloat.offsetWidth;
+    cartFloat.classList.add('cart-bump');
+  }
 }
 
 renderCatalog();
@@ -546,6 +593,8 @@ setupCartNavigation();
 setupChatbot();
 setupQuoteRequestLink();
 setupContactForm();
+setupIndustryFilters();
+setupRevealAnimations();
 
 catalogSearch.addEventListener('input', renderCatalog);
 specSearch.addEventListener('input', renderSpecList);

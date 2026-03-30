@@ -6,8 +6,8 @@
   <title>Aetna Trading Corp | Ingredient Catalog</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20260330e" />
 </head>
 <body>
   <header class="site-header" id="home">
@@ -19,45 +19,113 @@
         <a href="#cart">Request for Quote</a>
         <a href="#contact">Contact Us</a>
       </div>
-      <button id="cart-toggle" class="cart-btn" aria-label="Go to cart">
+      <a id="cart-toggle" class="cart-btn" aria-label="Go to cart" href="#cart">
         <span>Cart</span>
         <span id="cart-count" class="cart-count">0</span>
-      </button>
+      </a>
     </nav>
 
-    <div class="hero">
-      <p class="eyebrow">Ingredient Distribution</p>
-      <h1>Welcome to Aetna Trading Corp.</h1>
+    <div class="title-lockup reveal" id="title-graphic">
+      <video class="title-globe-video" autoplay loop muted playsinline preload="auto">
+        <source src="assets/groke-video.mp4" type="video/mp4" />
+      </video>
+    </div>
+
+    <div class="hero reveal">
+      <h2>Your Trusted Partner in Raw Materials</h2>
       <p>
-        We are proud to be a trusted distributor of raw materials for personal care, nutritional,
-        and supplemental industries. Our team sources ingredients that align with FDA requirements
-        and quality expectations, while keeping communication clear and practical.
+        We are a distributor of a wide range of natural and synthetic raw materials, serving a variety
+        of industries such as:
+      </p>
+      <ul class="hero-list">
+        <li>Personal Care</li>
+        <li>Nutraceutical</li>
+        <li>Pharmaceutical</li>
+        <li>Food and Beverage</li>
+      </ul>
+      <p>
+        Our team specializes in sourcing from manufacturers that comply with applicable regulatory and quality
+        standards, including FDA requirements, cGMP guidelines, and industry documentation practices.
       </p>
       <p>
-        We value long-term client relationships and work hard to earn trust through responsive service,
-        ethical business practices, and dependable follow-through. Our goal is simple: deliver competitive,
-        reliable support that meets or exceeds expectations and helps you succeed.
+        Through a strong supplier network and disciplined sourcing process, we provide valued customers with
+        dependable access to proper documentation, traceability, and quality verification to support compliance
+        in their production environments.
       </p>
-      <div class="hero-actions">
-        <a class="button primary" href="#catalog">Browse Ingredients</a>
-        <a class="button ghost" href="#cart">Start Request for Quote</a>
-      </div>
+      <p>
+        Our focus is to deliver consistent product quality, competitive pricing, and reliable supply so clients
+        can manufacture with confidence. Please don't hesitate to
+        <a class="button inline-contact-button" href="#contact">Contact Us</a>.
+      </p>
     </div>
   </header>
 
   <main>
-    <section class="section" id="catalog">
+    <section class="section reveal" id="trust">
+      <div class="section-head">
+        <h2>Why Choose Aetna?</h2>
+      </div>
+      <div class="trust-grid">
+        <article class="panel trust-card">
+          <h3>Transparent Communication</h3>
+          <p>Fast responses, clear expectations, and practical guidance from inquiry to order completion.</p>
+        </article>
+        <article class="panel trust-card">
+          <h3>Documentation Coverage</h3>
+          <p>Spec sheets, Certificates of Analysis, and Safety Data Sheets are organized for easier purchasing decisions.</p>
+        </article>
+        <article class="panel trust-card">
+          <h3>Dependable Fulfillment</h3>
+          <p>We offer flexible packaging to meet your needs, from small repacked quantities to bulk and full truckload volumes.</p>
+        </article>
+      </div>
+      <div class="trust-media-row">
+        <section class="ops-strip" aria-label="Raw material drum storage and handling">
+          <video class="ops-strip-video" autoplay loop muted playsinline preload="metadata">
+            <source src="assets/grok%20video.mp4" type="video/mp4" />
+          </video>
+        </section>
+        <figure class="ops-strip ops-image-panel" aria-label="Documentation reference books">
+          <img class="ops-image" src="assets/books.jpeg" alt="Books and documentation materials" />
+        </figure>
+      </div>
+    </section>
+
+    <section class="section reveal" id="industries">
+      <div class="section-head">
+        <h2>Industries We Serve</h2>
+        <p>Select an industry to quickly filter the catalog.</p>
+      </div>
+      <div class="industry-band">
+        <button class="industry-tile active" data-industry="all">All Ingredients</button>
+        <button class="industry-tile" data-industry="Personal Care">Personal Care</button>
+        <button class="industry-tile" data-industry="Food & Beverage">Nutrition & Beverage</button>
+        <button class="industry-tile" data-industry="Herbal Extracts & Botanicals">Herbal Extracts</button>
+        <button class="industry-tile" data-industry="Oils">Essential Oils</button>
+      </div>
+    </section>
+
+    <section class="section reveal" id="catalog">
       <div class="section-head">
         <h2>Ingredient Catalog</h2>
         <p>Search by ingredient name. Results appear in the scroll panel below.</p>
       </div>
 
       <input id="catalog-search" type="search" placeholder="Search ingredient name..." />
+      <div class="catalog-shell">
+        <div class="catalog-layout">
+          <div class="catalog-scroll" id="catalog-results"></div>
 
-      <div class="catalog-scroll" id="catalog-results"></div>
+          <section class="ops-strip catalog-media-strip" aria-label="Raw material product montage">
+            <video class="ops-strip-video catalog-montage-video" autoplay loop muted playsinline preload="metadata">
+              <source src="assets/montage%20of%20products.mov" type="video/quicktime" />
+            </video>
+          </section>
+        </div>
+      </div>
     </section>
 
-    <section class="section" id="spec-sheets">
+    <section class="section reveal" id="spec-sheets">
       <div class="section-head">
         <h2>Spec Sheets</h2>
         <p>Click any ingredient to view its spec-sheet entry panel.</p>
@@ -74,10 +142,16 @@
       </div>
     </section>
 
-    <section class="section" id="cart">
+    <section class="section reveal" id="cart">
       <div class="section-head">
         <h2>Cart and Quote Request</h2>
         <p>Add ingredients to cart, then request your quote directly by email.</p>
+      </div>
+      <div class="quote-steps panel">
+        <strong>How It Works</strong>
+        <span>1. Add ingredients to cart</span>
+        <span>2. Adjust quantity per item</span>
+        <span>3. Request quote by email</span>
       </div>
       <div class="quote-layout">
         <div class="panel">
@@ -87,12 +161,13 @@
         <div class="panel">
           <h3>Quote Request Summary</h3>
           <div id="quote-output" class="quote-output">Add ingredients to cart to prepare your quote request.</div>
-          <a id="send-quote-request" class="button primary" href="mailto:sales@aetnatrading.com">Request Quote by Email</a>
+          <a id="send-quote-request" class="button primary" href="mailto:farahs@aetnatrading.com">Request Quote by Email</a>
+          <p class="quote-note">I want more information about unit size and lead time.</p>
         </div>
       </div>
     </section>
 
-    <section class="section" id="contact">
+    <section class="section reveal" id="contact">
       <div class="section-head">
         <h2>Contact Us</h2>
         <p>For purchasing, technical details, and account setup.</p>
@@ -100,8 +175,8 @@
       <div class="contact-grid">
         <div class="panel">
           <p><strong>Phone:</strong> (714) 760-4674</p>
-          <p><strong>Email:</strong> sales@aetnatrading.com</p>
-          <p><strong>Location:</strong> Santa Ana, California</p>
+          <p><strong>Email:</strong> farahs@aetnatrading.com</p>
+          <p><strong>Location:</strong> 1900 E Warner Ave Suite G, Santa Ana, California 92705, United States</p>
         </div>
         <form id="contact-form" class="panel contact-form">
           <h3>Send Us a Message</h3>
@@ -115,6 +190,12 @@
       </div>
     </section>
   </main>
+
+  <div id="cart-toast" class="cart-toast hidden">Added to cart</div>
+  <a id="cart-float" class="cart-float" href="#cart" aria-label="Open cart">
+    <span>Cart</span>
+    <span id="cart-float-count" class="cart-count">0</span>
+  </a>
 
   <button class="chat-toggle" id="chat-toggle">Ask Aetna Assistant</button>
   <aside class="chatbot hidden" id="chatbot">
@@ -131,6 +212,6 @@
     </form>
   </aside>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=20260330a"></script>
 </body>
 </html>
