@@ -2,11 +2,11 @@ const catalogData = [
   {
     industry: 'Oils',
     subcategories: [
-      { name: 'Citrus', ingredients: ['Expressed Lime', 'Grapefruit Pink', 'Lemon', 'Mandarin - Natural', 'Neroli', 'Petitgrain', 'Sweet Orange', 'Tangerine'] },
-      { name: 'Floral & Plant', ingredients: ['Aloe Vera', 'Birch Tar', 'Bi-rectified Blue Tansy', 'Cajeput', 'Cedarwood', 'Copaiba', 'Davana', 'Fir Needle (Siberica)', 'Frankincense (Olibanum)', 'Geranium', 'Gurjum Balsam', 'Hyssop', 'Jasmine Absolute', 'Lavender', 'Litsea Cubeba', 'Patchouli - Dark', 'Pine Scotch (Sylvestris)', 'Rose', 'Rosewood Natural', 'Sandalwood', 'Spike Lavender', 'Tea Tree', 'Vetiver', 'Wild Verbena', 'Ylang Extra'] },
-      { name: 'Nut & Herb', ingredients: ['Almond', 'Amyris', 'Armoise (Artemisia)', 'Macadamian', 'Jojoba', 'Rosemary (Camphor)', 'Sage Clary', 'Sage Dalmatian', 'Tarragon (Estragon)', 'Thyme Red (Borneol)', 'Thyme White', 'Walnut'] },
-      { name: 'Seed & Berry', ingredients: ['Blackseed', 'Cardamom', 'Carrot Seed', 'Dill Seed', 'Juniper Berry', 'Star Anise (Anise Seed)', 'Sunflower Seed', 'Safflower'] },
-      { name: 'Vegetable & Foodgrade', ingredients: ['Argentine Lemongrass', 'Avocado', 'Basil - M.C.', 'Chamomile', 'Cinnamon Leaf', 'Clove Bud', 'Coriander', 'Olive', 'Peppermint', 'Pepper Black', 'Pimento Leaf (Allspice)', 'Wintergreen'] }
+      { name: 'Citrus', ingredients: ['Expressed Lime Oil', 'Grapefruit Pink Oil', 'Lemon Oil', 'Mandarin Oil', 'Neroli Oil', 'Petitgrain Oil', 'Sweet Orange Oil', 'Tangerine Oil'] },
+      { name: 'Floral & Plant', ingredients: ['Aloe Vera Oil', 'Birch Tar Oil', 'Bi-rectified Blue Tansy Oil', 'Cajeput Oil', 'Cedarwood Oil', 'Copaiba Oil', 'Davana Oil', 'Fir Needle (Siberica) Oil', 'Frankincense (Olibanum) Oil', 'Geranium Oil', 'Gurjum Balsam Oil', 'Hyssop Oil', 'Jasmine Absolute Oil', 'Lavender Oil', 'Litsea Cubeba Oil', 'Patchouli-dark Oil', 'Pine Scotch (Sylvestris) Oil', 'Rose Oil', 'Rosewood Natural Oil', 'Sandalwood Oil', 'Spike Lavender Oil', 'Tea Tree Oil', 'Vetiver Oil', 'Wild Verbena Oil', 'Ylang Extra Oil'] },
+      { name: 'Nut & Herb', ingredients: ['Almond Oil', 'Amyris Oil', 'Armoise (Artemisia) Oil', 'Macadamian Oil', 'Jojoba Oil', 'Rosemary (Camphor) Oil', 'Sage Clary Oil', 'Sage Dalmatian Oil', 'Tarragon (Estragon) Oil', 'Thyme Red (Borneol) Oil', 'Thyme White Oil', 'Walnut Oil'] },
+      { name: 'Seed & Berry', ingredients: ['Blackseed Oil', 'Cardamom Oil', 'Carrot Seed Oil', 'Dill Seed Oil', 'Juniper Berry Oil', 'Star Anise (Anise Seed) Lil', 'Sunflower Seed Oil', 'Safflower Oil'] },
+      { name: 'Vegetable & Foodgrade', ingredients: ['Argentine Lemongrass Oil', 'Avocado Oil', 'Basil - M.C. Oil', 'Chamomile Oil', 'Cinnamon Leaf Oil', 'Clove Bud Oil', 'Coriande Oil', 'Olive Oil', 'Peppermint Oil', 'Pepper Black Oil', 'Pimento Leaf (Allspice) Oil', 'Wintergreen Oil'] }
     ]
   },
   {
