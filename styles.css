@@ -427,8 +427,15 @@ textarea {
   gap: 0.8rem;
 }
 
-.social-link {
+.social-links {
   margin-top: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.55rem;
+}
+
+.social-link {
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
