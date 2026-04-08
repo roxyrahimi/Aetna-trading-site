@@ -260,6 +260,9 @@ main {
   background: linear-gradient(180deg, #eef4fc 0%, #e6eef9 100%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.46);
   padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .eyebrow {
@@ -322,14 +325,6 @@ textarea {
   background: #ffffff;
 }
 
-.catalog-layout {
-  margin-top: 0;
-  display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
-  gap: 0.28rem;
-  align-items: stretch;
-}
-
 .catalog-scroll {
   margin-top: 0;
   border: 0;
@@ -344,7 +339,7 @@ textarea {
   width: 100%;
   max-width: none;
   margin-top: 0;
-  height: 430px;
+  height: clamp(240px, 38vh, 360px);
   border: 0;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.32);
@@ -799,10 +794,6 @@ textarea {
   .ops-strip {
     width: 100%;
     height: clamp(170px, 24vh, 250px);
-  }
-
-  .catalog-layout {
-    grid-template-columns: 1fr;
   }
 
   .catalog-shell {
