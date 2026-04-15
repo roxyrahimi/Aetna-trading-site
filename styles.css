@@ -26,6 +26,19 @@ body {
   line-height: 1.45;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 5.2rem;
+  z-index: 19;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(248, 251, 255, 0.96) 0%, rgba(248, 251, 255, 0.82) 54%, rgba(248, 251, 255, 0) 100%);
+  backdrop-filter: blur(8px);
+}
+
 a { color: inherit; text-decoration: none; }
 h1, h2, h3 {
   font-family: 'Playfair Display', serif;
@@ -51,17 +64,17 @@ main {
 }
 
 .top-nav {
-  margin-top: 0.6rem;
+  margin-top: 0.78rem;
   background: rgba(255, 255, 255, 0.96);
   border: 1px solid var(--line);
   border-radius: 999px;
-  padding: 0.62rem 0.88rem;
-  display: flex;
+  padding: 0.58rem clamp(0.55rem, 1.2vw, 0.88rem);
+  display: grid;
+  grid-template-columns: minmax(150px, auto) minmax(0, 1fr) auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  gap: clamp(0.35rem, 1.2vw, 1rem);
   position: fixed;
-  top: 0.5rem;
+  top: 0.78rem;
   left: 50%;
   transform: translateX(-50%);
   width: min(1160px, 94vw);
@@ -75,18 +88,22 @@ main {
   font-weight: 700;
   letter-spacing: 0.04em;
   color: var(--primary);
+  white-space: nowrap;
 }
 
 .nav-links {
   display: flex;
-  gap: 0.85rem;
-  font-size: 0.95rem;
+  justify-content: center;
+  gap: clamp(0.24rem, 0.9vw, 0.85rem);
+  min-width: 0;
+  font-size: clamp(0.78rem, 1.2vw, 0.95rem);
   font-weight: 600;
 }
 
 .nav-links a {
-  padding: 0.3rem 0.5rem;
+  padding: 0.28rem clamp(0.24rem, 0.7vw, 0.5rem);
   border-radius: 8px;
+  white-space: nowrap;
   transition: background-color 180ms ease, color 180ms ease, transform 180ms ease;
 }
 
@@ -97,16 +114,17 @@ main {
 }
 
 .cart-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.45rem;
   border: 1px solid var(--line);
   background: #fff;
   border-radius: 999px;
-  padding: 0.42rem 0.82rem;
+  padding: 0.38rem clamp(0.55rem, 1vw, 0.82rem);
   font: inherit;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
@@ -156,6 +174,17 @@ main {
   overflow: hidden;
 }
 
+.hero-background-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.56;
+  pointer-events: none;
+  z-index: 0;
+}
+
 .hero::before {
   content: "";
   position: absolute;
@@ -164,6 +193,16 @@ main {
   transform: translateX(-42%) rotate(8deg);
   animation: softSweep 9s ease-in-out infinite;
   pointer-events: none;
+  z-index: 1;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.46) 0%, rgba(239, 245, 252, 0.5) 100%);
+  pointer-events: none;
+  z-index: 1;
 }
 
 .title-lockup {
@@ -258,6 +297,9 @@ main {
 
 .ops-image-panel {
   margin: 0;
+  opacity: 0;
+  transform: translate3d(96px, 0, 0) scale(0.98);
+  will-change: transform, opacity;
 }
 
 .ops-image {
@@ -267,6 +309,10 @@ main {
   object-fit: cover;
   opacity: 0.96;
   filter: saturate(0.92) contrast(0.95) brightness(0.98);
+}
+
+.reveal.visible .ops-image-panel {
+  animation: booksSlideIn 2.4s cubic-bezier(0.22, 1, 0.36, 1) 220ms both;
 }
 
 .catalog-montage-video {
@@ -287,10 +333,57 @@ main {
   margin-top: 0.7rem;
   border: 1px solid var(--line);
   border-radius: 18px;
-  background: linear-gradient(180deg, #eef4fc 0%, #e6eef9 100%);
+  background: linear-gradient(180deg, rgba(238, 244, 252, 0.86) 0%, rgba(230, 238, 249, 0.86) 100%);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.46);
   padding: 0.5rem;
+  position: relative;
+  overflow: hidden;
   transition: box-shadow 260ms ease, border-color 260ms ease;
+}
+
+.catalog-background-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transform: scale(1.02);
+  transition: opacity 420ms ease;
+}
+
+#catalog.personal-care-background .catalog-background-video {
+  opacity: 0;
+}
+
+#catalog.nutrition-beverage-background .catalog-background-video {
+  opacity: 0;
+}
+
+#catalog.herbal-extracts-background .catalog-background-video {
+  opacity: 0;
+}
+
+#catalog.essential-oils-background .catalog-background-video {
+  opacity: 0;
+}
+
+#catalog.personal-care-background .catalog-background-video-personal {
+  opacity: 0.28;
+}
+
+#catalog.nutrition-beverage-background .catalog-background-video-nutrition {
+  opacity: 0.28;
+}
+
+#catalog.herbal-extracts-background .catalog-background-video-herbal {
+  opacity: 0.28;
+}
+
+#catalog.essential-oils-background .catalog-background-video-oils {
+  opacity: 0.28;
 }
 
 .catalog-shell:hover {
@@ -308,8 +401,15 @@ main {
   color: var(--cobalt);
 }
 
-.hero h2 { font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 25ch; margin-left: auto; margin-right: auto; }
-.hero p { max-width: 72ch; color: var(--muted); font-size: 1.03rem; margin-left: auto; margin-right: auto; }
+.hero h2,
+.hero p,
+.hero-list {
+  position: relative;
+  z-index: 2;
+}
+
+.hero h2 { font-size: clamp(1.8rem, 4.2vw, 3rem); max-width: 25ch; margin-left: auto; margin-right: auto; color: #172f52; }
+.hero p { max-width: 72ch; color: #203b63; font-size: 1.03rem; margin-left: auto; margin-right: auto; font-weight: 600; }
 .hero-actions { margin-top: 1rem; display: flex; gap: 0.6rem; flex-wrap: wrap; justify-content: center; }
 .hero-list {
   list-style: none;
@@ -322,12 +422,12 @@ main {
 }
 
 .hero-list li {
-  background: #e7eff9;
+  background: rgba(231, 239, 249, 0.88);
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 0.2rem 0.55rem;
-  color: #2c4f82;
-  font-weight: 600;
+  color: #1d416f;
+  font-weight: 700;
   transition: transform 180ms ease, border-color 180ms ease, background-color 180ms ease;
 }
 
@@ -345,6 +445,23 @@ main {
   background: var(--surface);
   box-shadow: var(--shadow);
   transition: box-shadow 260ms ease, border-color 260ms ease;
+}
+
+#catalog {
+  position: relative;
+  overflow: hidden;
+}
+
+#catalog > .section-head,
+#catalog > input,
+#catalog > .catalog-shell {
+  position: relative;
+  z-index: 1;
+}
+
+#catalog.catalog-video-background > input {
+  background: rgba(255, 255, 255, 0.82);
+  backdrop-filter: blur(2px);
 }
 
 .section:hover {
@@ -379,6 +496,8 @@ textarea {
   grid-template-columns: minmax(0, 1.45fr) minmax(260px, 0.55fr);
   gap: 0.28rem;
   align-items: stretch;
+  position: relative;
+  z-index: 1;
 }
 
 .catalog-scroll {
@@ -389,6 +508,11 @@ textarea {
   overflow-y: auto;
   padding: 0.35rem;
   background: rgba(255, 255, 255, 0.58);
+  backdrop-filter: blur(2px);
+}
+
+#catalog.catalog-video-background .catalog-scroll {
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .catalog-media-strip {
@@ -762,8 +886,8 @@ textarea {
 }
 
 @keyframes navSettle {
-  0% { opacity: 0; transform: translateY(-14px) scale(0.98); }
-  100% { opacity: 1; transform: translateY(0) scale(1); }
+  0% { opacity: 0; transform: translateX(-50%) translateY(-14px) scale(0.98); }
+  100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
 }
 
 @keyframes softSweep {
@@ -779,6 +903,13 @@ textarea {
 @keyframes montageSettle {
   0% { opacity: 0; transform: translateY(18px) scale(0.98); }
   100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes booksSlideIn {
+  0% { opacity: 0; transform: translate3d(96px, 0, 0) scale(0.98); }
+  55% { opacity: 1; transform: translate3d(12px, 0, 0) scale(1); }
+  78% { opacity: 1; transform: translate3d(-6px, 0, 0) scale(1); }
+  100% { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
 }
 
 @keyframes specBlockIn {
@@ -912,14 +1043,22 @@ textarea {
 
 @media (max-width: 980px) {
   .top-nav {
-    border-radius: 16px;
-    flex-wrap: wrap;
+    grid-template-columns: minmax(112px, auto) minmax(0, 1fr) auto;
+    border-radius: 999px;
   }
 
   .nav-links {
-    width: 100%;
-    overflow: auto;
-    white-space: nowrap;
+    justify-content: center;
+  }
+
+  .brand {
+    font-size: 0.88rem;
+    letter-spacing: 0.025em;
+  }
+
+  .cart-count {
+    width: 1.18rem;
+    height: 1.18rem;
   }
 
   .hero-list {

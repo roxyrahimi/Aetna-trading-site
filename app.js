@@ -37,6 +37,12 @@ const catalogData = [
 
 const catalogSearch = document.getElementById('catalog-search');
 const catalogResults = document.getElementById('catalog-results');
+const catalogSection = document.getElementById('catalog');
+const catalogBackgroundVideos = document.querySelectorAll('.catalog-background-video');
+const personalCareBackgroundVideo = document.querySelector('.catalog-background-video-personal');
+const nutritionBackgroundVideo = document.querySelector('.catalog-background-video-nutrition');
+const herbalBackgroundVideo = document.querySelector('.catalog-background-video-herbal');
+const oilsBackgroundVideo = document.querySelector('.catalog-background-video-oils');
 const industryTiles = document.querySelectorAll('.industry-tile');
 const specSearch = document.getElementById('spec-search');
 const specSheetList = document.getElementById('spec-sheet-list');
@@ -90,6 +96,27 @@ function filteredCatalogItems() {
 }
 
 function renderCatalog() {
+  const usePersonalCareBackground = activeIndustry === 'Personal Care';
+  const useNutritionBackground = activeIndustry === 'Food & Beverage';
+  const useHerbalBackground = activeIndustry === 'Herbal Extracts & Botanicals';
+  const useOilsBackground = activeIndustry === 'Oils';
+  catalogSection.classList.toggle('catalog-video-background', usePersonalCareBackground || useNutritionBackground || useHerbalBackground || useOilsBackground);
+  catalogSection.classList.toggle('personal-care-background', usePersonalCareBackground);
+  catalogSection.classList.toggle('nutrition-beverage-background', useNutritionBackground);
+  catalogSection.classList.toggle('herbal-extracts-background', useHerbalBackground);
+  catalogSection.classList.toggle('essential-oils-background', useOilsBackground);
+  catalogBackgroundVideos.forEach((video) => video.pause());
+  const activeBackgroundVideo = usePersonalCareBackground
+    ? personalCareBackgroundVideo
+    : useNutritionBackground
+      ? nutritionBackgroundVideo
+      : useHerbalBackground
+        ? herbalBackgroundVideo
+        : useOilsBackground
+          ? oilsBackgroundVideo
+          : null;
+  if (activeBackgroundVideo) activeBackgroundVideo.play().catch(() => {});
+
   const filtered = filteredCatalogItems();
   catalogResults.innerHTML = '';
 
